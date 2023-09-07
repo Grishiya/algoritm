@@ -19,7 +19,7 @@ public interface StringListService {
 
     String get(int index);
 
-    boolean equals(StringList otherList);
+    boolean equals(StringListService otherList);
 
     int size();
 
