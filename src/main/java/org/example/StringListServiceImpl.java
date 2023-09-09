@@ -13,11 +13,12 @@ public class StringListServiceImpl implements StringListService {
     public StringListServiceImpl(int initSize) {
         storage = new String[initSize];
     }
+
     @Override
     public String add(String item) {
         validateSize();
         validateItem(item);
-        storage[size++]=item;
+        storage[size++] = item;
         return item;
     }
 
@@ -30,10 +31,19 @@ public class StringListServiceImpl implements StringListService {
             storage[size++] = item;
             return item;
         }
+        System.arraycopy(
+                storage,
+                index,
+                storage,
+                index + 1,
+                size - index);
+        storage[index] = item;
+        size++;
         return item;
     }
 
     @Override
+
     public String set(int index, String item) {
         validateIndex(index);
         validateItem(item);
@@ -43,17 +53,32 @@ public class StringListServiceImpl implements StringListService {
 
     @Override
     public String remove(String item) {
-        return null;
+        validateItem(item);
+        int index = indexOf(item);
+        return remove(index);
     }
 
     @Override
     public String remove(int index) {
-        return null;
+        validateIndex(index);
+        if (index == -1) {
+            throw new ElementNotFoundException();
+        }
+        String item = storage[index];
+        if (index != size) {
+            System.arraycopy(
+                    storage,
+                    index + 1,
+                    storage, index,
+                    size - index);
+        }
+        size--;
+        return item;
     }
 
     @Override
     public boolean contains(String item) {
-        return indexOf(item)!=-1;
+        return indexOf(item) != -1;
     }
 
     @Override
@@ -68,7 +93,7 @@ public class StringListServiceImpl implements StringListService {
 
     @Override
     public int lastIndexOf(String item) {
-        for (int i = 0; i >= size-1; i--) {
+        for (int i = 0; i >= size - 1; i--) {
             if (storage[i].equals(item)) {
                 return i;
             }
@@ -106,7 +131,7 @@ public class StringListServiceImpl implements StringListService {
 
     @Override
     public String[] toArray() {
-        return Arrays.copyOf(storage,size);
+        return Arrays.copyOf(storage, size);
     }
 
     private void validateItem(String item) {
