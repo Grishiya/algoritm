@@ -3,11 +3,11 @@ package org.example;
 import java.util.Arrays;
 
 public class IntegerListServiceImpl implements IntegerListService {
-    private final Integer[] item;
+    private Integer[] item;
     private int size;
 
     public IntegerListServiceImpl() {
-        item = new Integer[100000];
+        item = new Integer[10];
     }
 
     public IntegerListServiceImpl(int initSize) {
@@ -79,7 +79,7 @@ public class IntegerListServiceImpl implements IntegerListService {
     @Override
     public boolean contains(Integer item) {
         Integer[] storageCopy = toArray();
-sortInsertion(storageCopy);
+        sortInsertion(storageCopy);
         return binarySearch(storageCopy, item);
     }
 
@@ -144,7 +144,7 @@ sortInsertion(storageCopy);
 
     private void validateSize() {
         if (size == item.length) {
-            throw new StorageIsFullException();
+            grow();
         }
     }
 
@@ -153,17 +153,32 @@ sortInsertion(storageCopy);
             throw new InvalidIndexEception();
         }
     }
-    private static void sortInsertion(Integer[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            int temp = arr[i];
-            int j = i;
-            while (j > 0 && arr[j - 1] >= temp) {
-                arr[j] = arr[j - 1];
-                j--;
-            }
-            arr[j] = temp;
+
+    public static void quickSort(int[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
         }
     }
+
+    private static int partition(int[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swapElements(arr, i, j);
+            }
+        }
+
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
     private static boolean binarySearch(Integer[] arr, int element) {
         int min = 0;
         int max = arr.length - 1;
@@ -182,5 +197,26 @@ sortInsertion(storageCopy);
             }
         }
         return false;
+    }
+
+    private void grow() {
+        item = Arrays.copyOf(item, size + size / 2);
+    }
+
+    private static void swapElements(int[] arr, int indexA, int indexB) {
+        int tmp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = tmp;
+    }
+    private static void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int temp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= temp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = temp;
+        }
     }
 }

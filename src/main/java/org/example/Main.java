@@ -11,6 +11,18 @@ public class Main {
         arr[indexA] = arr[indexB];
         arr[indexB] = tmp;
     }
+    private static void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int temp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= temp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = temp;
+        }
+    }
+
     public static void sortSelection(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int minElementIndex = i;
@@ -65,30 +77,71 @@ public class Main {
     public Main(IntegerListService integerListService) {
         this.integerListService = integerListService;
     }
-    public static int[] generateRandomArray() {
-        java.util.Random random = new java.util.Random();
-        int[] arr = new int[100000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(100_000) + 100_000;
+    private static boolean binarySearch(Integer[] arr, int element) {
+        int min = 0;
+        int max = arr.length - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (element == arr[mid]) {
+                return true;
+            }
+
+            if (element < arr[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
         }
-        return arr;
+        return false;
+    }
+    public static int[] generateRandomArray() {
+        int size = 100000; // Размерность массива
+
+        // Верхняя граница рандомных чисел, не включая 100
+        int upperBound = 1000000;
+        int[] array = new int[size]; // Создаем массив с заданной размерностью
+
+        Random random = new Random(); // Создаем объект для генерирования рандомных чисел
+
+        IntStream.range(0, size) // С помощью стрима проходим по всему массиву
+                // Заносим рандомное число в ячейку массива
+                // Рандомные значения могут быть в диапазоне от 0 до 99 включительно
+                .forEach(index -> array[index] = random.nextInt(upperBound));
+        return array;
     }
     public static int[] generateRandomArray2() {
-        java.util.Random random = new java.util.Random();
-        int[] arr = new int[100000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(100_000) + 100_000;
-        }
-        return arr;
+        int size = 100000; // Размерность массива
+
+        // Верхняя граница рандомных чисел, не включая 100
+        int upperBound = 1000000;
+        int[] array = new int[size]; // Создаем массив с заданной размерностью
+
+        Random random = new Random(); // Создаем объект для генерирования рандомных чисел
+
+        IntStream.range(0, size) // С помощью стрима проходим по всему массиву
+                // Заносим рандомное число в ячейку массива
+                // Рандомные значения могут быть в диапазоне от 0 до 99 включительно
+                .forEach(index -> array[index] = random.nextInt(upperBound));
+        return array;
     }
     public static int[] generateRandomArray3() {
-        java.util.Random random = new java.util.Random();
-        int[] arr = new int[100000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(100_000) + 100_000;
-        }
-        return arr;
+        int size = 100000; // Размерность массива
+
+        // Верхняя граница рандомных чисел, не включая 100
+        int upperBound = 1000000;
+        int[] array = new int[size]; // Создаем массив с заданной размерностью
+
+        Random random = new Random(); // Создаем объект для генерирования рандомных чисел
+
+        IntStream.range(0, size) // С помощью стрима проходим по всему массиву
+                // Заносим рандомное число в ячейку массива
+                // Рандомные значения могут быть в диапазоне от 0 до 99 включительно
+                .forEach(index -> array[index] = random.nextInt(upperBound));
+        return array;
     }
+
 
     static void task3() {
         long start = System.currentTimeMillis();
@@ -108,9 +161,15 @@ public class Main {
         System.out.println(System.currentTimeMillis() - start);
     }
 
+
+
+
+
     public static void main(String[] args) {
 
 
+task1();
+task2();
 task3();
 
 
